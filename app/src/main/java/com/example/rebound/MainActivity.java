@@ -2,6 +2,7 @@ package com.example.rebound;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -17,17 +18,26 @@ public class MainActivity extends AppCompatActivity {
 
     private final BaseSpringSystem baseSpringSystem = SpringSystem.create();
     private final ExampleSpringListener exampleSpringListener = new ExampleSpringListener();
-    private View imageView;
+    private ImageView imageView;
     private FrameLayout frameLayout;
     private Spring spring;
+    public String url = "http://siesgst.tk/static/images/assets/stab_logo.png";
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.v("start","img");
+        imageView = (ImageView)findViewById(R.id.image_view);
+        Log.v("start","img1");
+        new ImageAsync(url,imageView).execute();
+        Log.v("start","img2");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         frameLayout = (FrameLayout)findViewById(R.id.root);
-        imageView = (ImageView)findViewById(R.id.image_view);
-
         spring = baseSpringSystem.createSpring();
 
         frameLayout.setOnTouchListener(new View.OnTouchListener() {
