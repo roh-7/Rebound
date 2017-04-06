@@ -14,7 +14,8 @@ import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity 
+{
 
     private final BaseSpringSystem baseSpringSystem = SpringSystem.create();
     private final ExampleSpringListener exampleSpringListener = new ExampleSpringListener();
@@ -24,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
     public String url = "http://siesgst.tk/static/images/assets/stab_logo.png";
 
     @Override
-    protected void onStart() {
+    protected void onStart() 
+    {
         super.onStart();
         Log.v("start","img");
         imageView = (ImageView)findViewById(R.id.image_view);
@@ -34,15 +36,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) 
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         frameLayout = (FrameLayout)findViewById(R.id.root);
         spring = baseSpringSystem.createSpring();
 
-        frameLayout.setOnTouchListener(new View.OnTouchListener() {
+        frameLayout.setOnTouchListener(new View.OnTouchListener()
+         {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public boolean onTouch(View view, MotionEvent motionEvent) 
+            {
                 switch (motionEvent.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
@@ -56,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
     }
 
     @Override
@@ -73,9 +77,11 @@ public class MainActivity extends AppCompatActivity {
         spring.removeListener(exampleSpringListener);
     }
 
-    private class ExampleSpringListener extends SimpleSpringListener {
+    private class ExampleSpringListener extends SimpleSpringListener
+    {
         @Override
-        public void onSpringUpdate(Spring spring) {
+        public void onSpringUpdate(Spring spring) 
+        {
             float mappedValue = (float) SpringUtil.mapValueFromRangeToRange(spring.getCurrentValue(), 0, 1, 1, 0.5);
             imageView.setScaleX(mappedValue);
             imageView.setScaleY(mappedValue);
