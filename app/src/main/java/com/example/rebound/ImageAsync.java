@@ -19,7 +19,6 @@ public class ImageAsync extends AsyncTask<Void,Void,Bitmap> {
     String url;
     ImageView imageView;
 
-
     public ImageAsync(String url, ImageView imageView) {
         this.url = url;
         this.imageView = imageView;
@@ -27,9 +26,10 @@ public class ImageAsync extends AsyncTask<Void,Void,Bitmap> {
 
     @Override
     protected Bitmap doInBackground(Void... voids) {
+        final String LOG_TAG = "doInBackground";
         try {
             URL urlConnection = null;
-            Log.v("url",url);
+            Log.v(LOG_TAG,url);
             urlConnection = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) urlConnection
                 .openConnection();
@@ -47,10 +47,11 @@ public class ImageAsync extends AsyncTask<Void,Void,Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap bitmap) {
+        final String LOG_TAG = "onPostExecute";
         super.onPostExecute(bitmap);
-        Log.v("onPost","1");
+        Log.v(LOG_TAG,"1");
         imageView.setImageBitmap(bitmap);
-        Log.v("onPost","2");
+        Log.v(LOG_TAG,"2");
     }
 
     @Override

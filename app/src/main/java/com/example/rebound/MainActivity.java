@@ -16,7 +16,6 @@ import com.facebook.rebound.SpringUtil;
 
 public class MainActivity extends AppCompatActivity 
 {
-
     private final BaseSpringSystem baseSpringSystem = SpringSystem.create();
     private final ExampleSpringListener exampleSpringListener = new ExampleSpringListener();
     private ImageView imageView;
@@ -27,12 +26,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() 
     {
+        final String LOG_TAG = "onStart";
         super.onStart();
-        Log.v("start","img");
+        Log.v(LOG_TAG,"img");
         imageView = (ImageView)findViewById(R.id.image_view);
-        Log.v("start","img1");
+        Log.v(LOG_TAG,"img1");
         new ImageAsync(url,imageView).execute();
-        Log.v("start","img2");
+        Log.v(LOG_TAG,"img2");
     }
 
     @Override
