@@ -26,13 +26,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() 
     {
-        final String LOG_TAG = "onStart";
         super.onStart();
-        Log.v(LOG_TAG,"img");
         imageView = (ImageView)findViewById(R.id.image_view);
-        Log.v(LOG_TAG,"img1");
         new ImageAsync(url,imageView).execute();
-        Log.v(LOG_TAG,"img2");
     }
 
     @Override

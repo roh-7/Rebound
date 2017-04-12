@@ -14,51 +14,50 @@ import java.net.URL;
  * Created by rohitramaswamy on 24/02/17.
  */
 
-public class ImageAsync extends AsyncTask<Void,Void,Bitmap> {
+public class ImageAsync extends AsyncTask<Void,Void,Bitmap>
+{
 
     String url;
     ImageView imageView;
 
-    public ImageAsync(String url, ImageView imageView) {
+    public ImageAsync(String url, ImageView imageView)
+    {
         this.url = url;
         this.imageView = imageView;
     }
 
     @Override
-    protected Bitmap doInBackground(Void... voids) {
-        final String LOG_TAG = "doInBackground";
-        try {
+    protected Bitmap doInBackground(Void... voids)
+    {
+        try
+        {
             URL urlConnection = null;
-            Log.v(LOG_TAG,url);
             urlConnection = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) urlConnection
                 .openConnection();
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();
-            Log.v("input",input.toString());
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
             return myBitmap;
-        } catch (Exception e) {
+        } 
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         return null;
     }
 
     @Override
-    protected void onPostExecute(Bitmap bitmap) {
-        final String LOG_TAG = "onPostExecute";
+    protected void onPostExecute(Bitmap bitmap)
+    {
         super.onPostExecute(bitmap);
-        Log.v(LOG_TAG,"1");
         imageView.setImageBitmap(bitmap);
-        Log.v(LOG_TAG,"2");
     }
 
     @Override
-    protected void onPreExecute() {
+    protected void onPreExecute()
+    {
         super.onPreExecute();
-
     }
-
-
 }
