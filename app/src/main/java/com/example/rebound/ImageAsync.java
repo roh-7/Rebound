@@ -3,7 +3,6 @@ package com.example.rebound;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.InputStream;
@@ -16,7 +15,6 @@ import java.net.URL;
 
 public class ImageAsync extends AsyncTask<Void,Void,Bitmap>
 {
-
     String url;
     ImageView imageView;
 
@@ -27,14 +25,20 @@ public class ImageAsync extends AsyncTask<Void,Void,Bitmap>
     }
 
     @Override
+    protected void onPreExecute()
+    {
+        super.onPreExecute();
+    }
+
+    @Override
     protected Bitmap doInBackground(Void... voids)
     {
+        // retrieving image from the url in the form of bitmap and using BitmapFactory.
         try
         {
             URL urlConnection = null;
             urlConnection = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection) urlConnection
-                .openConnection();
+            HttpURLConnection connection = (HttpURLConnection) urlConnection.openConnection();
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();
@@ -52,12 +56,7 @@ public class ImageAsync extends AsyncTask<Void,Void,Bitmap>
     protected void onPostExecute(Bitmap bitmap)
     {
         super.onPostExecute(bitmap);
+        // populating the imageview bit the obtained bitmap.
         imageView.setImageBitmap(bitmap);
-    }
-
-    @Override
-    protected void onPreExecute()
-    {
-        super.onPreExecute();
     }
 }
