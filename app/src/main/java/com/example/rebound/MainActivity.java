@@ -2,51 +2,105 @@ package com.example.rebound;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.facebook.rebound.BaseSpringSystem;
-import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
+import com.facebook.rebound.SpringListener;
 import com.facebook.rebound.SpringSystem;
-import com.facebook.rebound.SpringUtil;
 
-public class MainActivity extends AppCompatActivity 
+public class MainActivity extends AppCompatActivity
 {
-    // BaseSpringSystem is a system to run the physics loop for a set of springs.
     private final BaseSpringSystem baseSpringSystem = SpringSystem.create();
-    // user defined class that extends SimpleSpringListener.
-    private final ExampleSpringListener exampleSpringListener = new ExampleSpringListener();
+    private final BaseSpringSystem _baseSpringSystem = SpringSystem.create();
     private ImageView imageView;
-    private FrameLayout frameLayout;
-    // this is the spring used for the animations.
+    private ImageView _imageView;
     private Spring spring;
-    public String url = "http://siesgst.tk/static/images/assets/stab_logo.png";
+    private Spring _spring;
+    public final String url = "https://static.xx.fbcdn.net/rsrc.php/v1/yB/r/i9VUkiHf940.jpg";
+    public final String _url = "https://static.xx.fbcdn.net/rsrc.php/v1/yB/r/i9VUkiHf940.jpg";
 
     @Override
-    protected void onStart() 
+    protected void onStart()
     {
+        final String LOG_TAG = "onStart";
         super.onStart();
-        imageView = (ImageView)findViewById(R.id.image_view);
-        // populating the image using an async task in the background.
+        Log.v(LOG_TAG,"img");
+        Log.v(LOG_TAG,"img1");
+        new ImageAsync(_url,_imageView).execute();
         new ImageAsync(url,imageView).execute();
+        Log.v(LOG_TAG,"img2");
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) 
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        frameLayout = (FrameLayout)findViewById(R.id.root);
-        // initialising the spring.
+        final String LOG_TAG = "onCreate";
         spring = baseSpringSystem.createSpring();
-        frameLayout.setOnTouchListener(new View.OnTouchListener()
-         {
+        _spring = _baseSpringSystem.createSpring();
+        imageView = (ImageView)findViewById(R.id.image_view1);
+        _imageView = (ImageView) findViewById(R.id._image_view);
+        spring.addListener(new SpringListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) 
+            public void onSpringUpdate(Spring spring) {
+                float value = (float)spring.getCurrentValue();
+                float mappedValue = 1f - (0.5f*value);
+                imageView.setScaleX(mappedValue);
+                imageView.setScaleY(mappedValue);
+            }
+
+            @Override
+            public void onSpringAtRest(Spring spring) {
+
+            }
+
+            @Override
+            public void onSpringActivate(Spring spring) {
+
+            }
+
+            @Override
+            public void onSpringEndStateChange(Spring spring) {
+
+            }
+        });
+
+        _spring.addListener(new SpringListener() {
+            @Override
+            public void onSpringUpdate(Spring spring) {
+                float value = (float)spring.getCurrentValue();
+                float mappedValue = 1f - (0.5f*value);
+                _imageView.setScaleY(mappedValue);
+                _imageView.setScaleX(mappedValue);
+            }
+
+            @Override
+            public void onSpringAtRest(Spring spring) {
+
+            }
+
+            @Override
+            public void onSpringActivate(Spring spring) {
+
+            }
+
+            @Override
+            public void onSpringEndStateChange(Spring spring) {
+
+            }
+        });
+
+        imageView.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent)
             {
+                Log.v(LOG_TAG,"1");
                 switch (motionEvent.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
@@ -60,35 +114,25 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
         });
-    }
 
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        // adding the listener once the activity resumes.
-        spring.addListener(exampleSpringListener);
-    }
-
-    @Override
-    protected void onPause()
-    {
-        super.onPause();
-        // removing the listener once the activity is paused
-        spring.removeListener(exampleSpringListener);
-    }
-
-    private class ExampleSpringListener extends SimpleSpringListener
-    {
-        // class is used to get the mapped value and update the scale
-        @Override
-        public void onSpringUpdate(Spring spring) 
+        _imageView.setOnTouchListener(new View.OnTouchListener()
         {
-            // taking value from the spring
-            float mappedValue = (float) SpringUtil.mapValueFromRangeToRange(spring.getCurrentValue(), 0, 1, 1, 0.5);
-            // setting scale of the images along X and Y.
-            imageView.setScaleX(mappedValue);
-            imageView.setScaleY(mappedValue);
-        }
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent)
+            {
+                Log.v(LOG_TAG,"2");
+                switch (motionEvent.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        _spring.setEndValue(1);
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                    case MotionEvent.ACTION_UP:
+                        _spring.setEndValue(0);
+                        break;
+                }
+                return true;
+            }
+        });
     }
 }
